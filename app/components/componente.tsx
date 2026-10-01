@@ -1,5 +1,4 @@
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import CardFilme from "./CardFilme";
 
 export default function componente() {
   return (
