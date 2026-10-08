@@ -1,33 +1,36 @@
 // Tela do carrinho: lê a lista do disco quando a tela ganha foco
 // e tem botão para remover cada item (também atualiza o disco).
-import { useFocusEffect } from "expo-router";
-import { useCallback, useState } from "react";
+import { useState, useEffect } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import {
-    Produto,
-    carregarCarrinho,
-    removerDoCarrinho,
-} from "../storage/carrinhoStorage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Carrinho() {
-    // useState guarda a lista que vamos exibir na tela.
-    const [itens, setItens] = useState<Produto[]>([]);
+
+export default function Carrinho() {  
+    
+    const [itens, setItens] = useState([]);
 
     // Função que lê do disco e atualiza o estado.
     async function atualizar() {
-        const lista = await carregarCarrinho();
-        setItens(lista);
+        const lista = await AsyncStorage.getItem('@carrinho');
+        setItens(lista ? JSON.parse(lista) : []);
+    }
+    //chama a função atualizar quando a página é exibida, para atualizar a lista do carrinho.   
+    useEffect(() => {
+        atualizar();
+    }, []);
+
+
+    async function removerDoCarrinho(index) {
+        let list = await AsyncStorage.getItem('@carrinho');
+        if (list) {
+            const lista = JSON.parse(list);
+            lista.splice(index, 1);
+            await AsyncStorage.setItem('@carrinho', JSON.stringify(lista));
+        }
     }
 
-    // useFocusEffect roda toda vez que a tela entra em foco (vira a aba ativa).
-    useFocusEffect(
-        useCallback(() => {
-            atualizar();
-        }, [])
-    );
-
     // Remove um item: apaga do disco e recarrega a lista.
-    async function handleRemover(index: number) {
+    async function remover(index: number) {
         await removerDoCarrinho(index);
         await atualizar();
     }
@@ -57,7 +60,7 @@ export default function Carrinho() {
                             {/* Botão que remove o item do disco */}
                             <Pressable
                                 style={styles.botaoRemover}
-                                onPress={() => handleRemover(index)}
+                                onPress={() => remover(index)}
                             >
                                 <Text style={styles.botaoTexto}>Remover</Text>
                             </Pressable>

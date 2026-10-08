@@ -3,12 +3,22 @@
 import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { adicionarAoCarrinho } from "../storage/carrinhoStorage";
 import { produtosMock } from "../rotaServidor/dadosMock";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function ListaProdutos() {
     // Função chamada ao clicar no botão: salva o produto no "disco".
-    async function handleAdicionar(produto: typeof produtosMock[number]) {
-        await adicionarAoCarrinho(produto);
-        Alert.alert("Adicionado", `${produto.nome} foi adicionado ao carrinho.`);
+    async function adicionarCarrinho(produto) {
+        let list = await AsyncStorage.getItem('@carrinho');
+        if (!list) {
+            list = [];
+        } else {
+            list = JSON.parse(list);
+        }
+        list.push(produto);
+        await AsyncStorage.setItem('@carrinho', JSON.stringify(list));
+        console.log('Produto adicionado ao carrinho:', produto);
+        console.log('Lista atual do carrinho:', list);
     }
 
     return (
@@ -32,7 +42,7 @@ export default function ListaProdutos() {
                         {/* Botão que grava o produto no disco */}
                         <Pressable
                             style={styles.botao}
-                            onPress={() => handleAdicionar(item)}
+                            onPress={() => adicionarCarrinho(item)}
                         >
                             <Text style={styles.botaoTexto}>Adicionar</Text>
                         </Pressable>
