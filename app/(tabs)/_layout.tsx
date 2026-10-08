@@ -55,6 +55,34 @@ export default function TabLayout() {
         }}
       />
 
+      <Tabs.Screen
+        name="listaprodutos"
+        options={{
+          title: "Produtos",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "list" : "list-outline"}
+              size={24}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="carrinho"
+        options={{
+          title: "Carrinho",
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons
+              name={focused ? "cart" : "cart-outline"}
+              size={24}
+              color={color}
+            />
+          ),
+        }}
+      />
+
       {/* Rota de Busca dentro das abas (oculta do menu inferior com href: null) */}
       <Tabs.Screen
         name="rotas/busca/[query]"
