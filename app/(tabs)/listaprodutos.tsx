@@ -1,7 +1,6 @@
 // Tela que mostra a lista de produtos disponíveis para comprar.
 // Cada produto tem um botão "Adicionar ao carrinho" que grava no disco.
 import { Alert, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import { adicionarAoCarrinho } from "../storage/carrinhoStorage";
 import { produtosMock } from "../rotaServidor/dadosMock";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

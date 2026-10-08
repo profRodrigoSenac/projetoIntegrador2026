@@ -1,8 +1,9 @@
 // Tela do carrinho: lê a lista do disco quando a tela ganha foco
 // e tem botão para remover cada item (também atualiza o disco).
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from "expo-router";
 
 
 export default function Carrinho() {  
@@ -14,10 +15,12 @@ export default function Carrinho() {
         const lista = await AsyncStorage.getItem('@carrinho');
         setItens(lista ? JSON.parse(lista) : []);
     }
-    //chama a função atualizar quando a página é exibida, para atualizar a lista do carrinho.   
-    useEffect(() => {
-        atualizar();
-    }, []);
+    // Chama a função atualizar sempre que a tela ganha foco.
+    useFocusEffect(
+        useCallback(() => {
+            atualizar();
+        }, [])
+    );
 
 
     async function removerDoCarrinho(index) {
