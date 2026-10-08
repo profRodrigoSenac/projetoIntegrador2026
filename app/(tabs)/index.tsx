@@ -8,7 +8,7 @@ export default function App() {
         <View style={styles.container}>
             <Text style={styles.texto}> Seu projeto integrador começa aqui!</Text>
             <Link href={"/rotas/produtos/1"} style={styles.link}>
-                <Text> Click aqui para ir a página de um produto exemplo! </Text>
+                <Text> Click aqui para ir a página de um produto exemplo!ssssssssss </Text>
             </Link>
         </View >
     );
